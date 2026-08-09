@@ -1,0 +1,74 @@
+# Windows Active Directory Lab
+
+This repository documents the foundational concepts, management structures, and administrative workflows used in Microsoft Active Directory Domain Services (AD DS). 
+
+## Core Concepts & Architecture
+
+### Identity & Access Management
+* **What does Active Directory user management allow you to do?**  
+  It enables centralized control over network identities. Administrators can provision user accounts, manage security groups, reset passwords, map network home drives, configure login scripts, and apply Group Policy Objects (GPOs).
+
+### Directory Databases
+* **What is `ntds.dit`?**  
+  It is the heart of Active Directory. This database file stores all directory data, including user objects, group memberships, computer accounts, and password hashes (encrypted via the NTLM/Kerberos protocols).
+* **What is the SYSVOL share?**  
+  A critical public folder replication share that stores public files like Group Policy templates, login scripts, and staging data across all Domain Controllers.
+
+---
+
+## PowerShell Reference Cheat Sheet
+
+Active Directory is heavily managed via the `ActiveDirectory` PowerShell module. Below are the modern equivalents to standard identity workflows.
+
+### Account Creation & Deletion
+* **Create a user with a specific organizational path:**
+  ```powershell
+  New-ADUser -Name "Bob Smith" -SamAccountName "bob" -Path "OU=Employees,DC=domain,DC=local" -CreateHomeDirectory -HomeDrive "H:" -HomePath "\\server\homes\bob"
+  ```
+* **Delete a user and remove their directory objects:**
+  ```powershell
+  Remove-ADUser -Identity "bob" -Confirm:\$false
+  ```
+
+### Security & Password Management
+* **Set or reset a user's password:**
+  ```powershell
+  Set-ADAccountPassword -Identity "joker" -NewPassword (Read-Host -AsSecureString "Enter Password")
+  ```
+* **Lock/Disable a user account:**
+  ```powershell
+  Disable-ADAccount -Identity "joker"
+  ```
+* **Unlock/Enable a user account:**
+  ```powershell
+  Enable-ADAccount -Identity "joker"
+  ```
+* **Check the status and properties of an account:**
+  ```powershell
+  Get-ADUser -Identity "joker" -Properties AccountLockoutTime, Enabled, PasswordLastSet
+  ```
+
+### Modifying Group Memberships
+* **Add a user to a security group (e.g., Domain Admins):**
+  ```powershell
+  Add-ADGroupMember -Identity "Domain Admins" -Members "joker"
+  ```
+* **View all groups a specific user belongs to:**
+  ```powershell
+  Get-ADPrincipalGroupMembership -Identity "joker" | Select-Object Name
+  ```
+
+---
+
+## Active Directory Permissions (NTFS & Share)
+
+Windows relies on Access Control Lists (ACLs) composed of Access Control Entries (ACEs) to protect resources.
+
+### Standard Folder Permission Structure
+
+| Security Principal | Inheritance | Permission Level | Description |
+| :--- | :--- | :--- | :--- |
+| **Creator Owner** | None | Full Control | The user who creates subfiles owns them |
+| **SYSTEM** | Inherited | Full Control | Operating system engine access |
+| **Domain Admins** | Inherited | Full Control | Domain administrator structural access |
+| **Target User** | Explicit | Modify / Read / Write | Granted personal access to their home share |
