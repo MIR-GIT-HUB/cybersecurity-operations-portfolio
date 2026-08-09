@@ -1,0 +1,69 @@
+# Active Directory User Management & Administration (TryHackMe)
+
+This repository documents the practical administration of Active Directory (AD) Objects, focusing on lifecycle management, structural cleanup, password resets, and the Principle of Least Privilege (PoLP) through task delegation. All labs were executed via a Remote Desktop Protocol (RDP) session on a Windows Server instance.
+
+## 🛠️ Skills & Concepts Covered
+* **Active Directory Architecture:** Managing Organizational Units (OUs), Containers, and Inheritance.
+* **Identity Lifecycle Management:** Provisioning users, modifying attributes, and decommissioning obsolete objects.
+* **Security & Access Control:** Implementing Task Delegation to enforce the Principle of Least Privilege.
+* **Remote Administration:** Utilizing `xfreerdp` to securely manage Domain Controllers from an attacker/administrator workstation.
+
+---
+
+## 🚀 Environment Setup & Connection
+
+To administer the Domain Controller, the local attack workstation was bridged to the lab network environment via OpenVPN and accessed using `xfreerdp` to handle dynamic display resizing and shared clipboard functionality.
+
+```bash
+# Verify the network bridge (tun0) is active
+ip a show tun0
+
+# Initiate the secure RDP management session
+xfreerdp /u:"Administrator" /p:'[REDACTED_PASSWORD]' /v:10.10.x.x /dynamic-resolution +clipboard
+```
+
+---
+
+## 📁 Lab Walkthrough & Core Tasks
+
+### 1. Structure Cleanup: Deleting Obsolete OUs & Users
+To reduce the attack surface and remove stale directory objects, old user accounts and decommissioned Organizational Units were targeted for deletion.
+
+* **Bypassing Accidental Deletion Protection:** 
+  By default, Active Directory prevents the deletion of critical OUs. To remove them:
+  1. Opened **Active Directory Users and Computers (ADUC)**.
+  2. Navigated to the top menu and enabled **View** -> **Advanced Features**.
+  3. Right-clicked the target OU -> **Properties** -> **Object** tab.
+  4. Unchecked **"Protect object from accidental deletion"**.
+  5. Right-clicked the OU or nested users and selected **Delete**.
+
+### 2. Password Self-Service & Administrative Resets
+Simulated standard helpdesk workflows by managing user credentials directly through the directory interface.
+
+1. Located the compromised or locked-out user account within its respective OU.
+2. Right-clicked the account and selected **Reset Password...**.
+3. Enforced security compliance by checking **"User must change password at next logon"**.
+4. Verified account status via the **Account** tab to ensure the account was unlocked (`Account is locked out` flag cleared).
+
+### 3. Active Directory Delegation of Control
+To avoid granting full Domain Admin privileges to tier-1 helpdesk personnel, specific administrative tasks were safely delegated.
+
+* **Scenario:** Delegating password reset permissions to a custom Support Group (`Helpdesk-Tier1`).
+* **Execution via the Delegation Wizard:**
+  1. Right-clicked the target OU containing production users -> **Delegate Control...**.
+  2. Selected the **Helpdesk-Tier1** security group.
+  3. Chosen from the common tasks list: **"Reset user passwords and force password change at next logon"**.
+  4. Finalized the wizard to append specific Access Control Entries (ACEs) to the OU's security descriptor.
+
+---
+
+## 🔒 Security Key Takeaways
+
+* **Principle of Least Privilege (PoLP):** Domain Admin accounts should rarely be used for routine operations. Utilizing the Delegation Wizard ensures users only possess the exact permissions required for their roles.
+* **Active Directory Hygiene:** Regular auditing and deletion of orphaned OUs and inactive accounts prevent attackers from utilizing them for persistence or lateral movement.
+* **Accidental Deletion Safeguard:** While tedious during mass cleanups, the "Protect object from accidental deletion" flag is an essential production control to prevent accidental directory-wide downtime.
+
+---
+
+## 📜 Disclaimer
+The steps documented above were performed within a controlled, authorized sandbox environment provided by TryHackMe for educational and skills-validation purposes.
