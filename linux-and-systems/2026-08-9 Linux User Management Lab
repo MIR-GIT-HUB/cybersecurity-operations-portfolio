@@ -1,0 +1,113 @@
+# Linux User Management Lab
+
+This repository contains a comprehensive guide, cheat sheet, and review of core Linux user and group management concepts. It covers account creation, file structures, permission models, and security workflows.
+
+## Core Concepts & FAQ
+
+### User Management Basics
+* **What does Linux user management allow you to do?**  
+  It allows administrators to create, modify, and delete user accounts, set passwords, change default shells, manage home directories, and control group memberships.
+
+### System Configuration Files
+* **What is `/etc/passwd`?**  
+  It is a text file that stores basic user account information. Each line represents a user and contains fields for the username, UID, GID, home directory, and default shell.
+* **What is `/etc/shadow`?**  
+  It is a secure file that stores encrypted user password hashes and account expiration data. It is strictly protected and only readable by the `root` user.
+
+### Line Breakdown Example
+```text
+joker:x:5001:5001::/home/joker:/bin/sh
+```
+* **joker**: Username
+* **x**: Password placeholder (indicates the password hash is stored in `/etc/shadow`)
+* **5001**: User ID (UID)
+* **5001**: Group ID (GID)
+* **::**: Optional comment/GECOS field (empty here)
+* **/home/joker**: User's home directory
+* **/bin/sh**: User's default login shell
+
+---
+
+## Command Reference Cheat Sheet
+
+### Account Creation & Deletion
+* **Create a user with a home directory:**
+  ```bash
+  sudo useradd -m bob
+  ```
+* **Delete a user and purge their home directory:**
+  ```bash
+  sudo userdel -r bob
+  ```
+
+### Password Security & Status
+* **Set or change a user's password:**
+  ```bash
+  sudo passwd joker
+  ```
+* **Lock a user account password:**
+  ```bash
+  sudo passwd -l joker
+  ```
+* **Unlock a user account password:**
+  ```bash
+  sudo passwd -u joker
+  ```
+* **Check the password status of an account (e.g., `P` for usable password):**
+  ```bash
+  sudo passwd -S joker
+  ```
+* **View secure password hashes:**
+  ```bash
+  sudo cat /etc/shadow
+  ```
+
+### Modifying User Accounts
+* **Change a user's home directory path:**
+  ```bash
+  sudo usermod -d /home/wayne joker
+  ```
+* **Change a user's default login shell:**
+  ```bash
+  sudo usermod -s /bin/bash joker
+  ```
+* **Append a user to a secondary group (e.g., `sudo`):**
+  ```bash
+  sudo usermod -aG sudo joker
+  ```
+
+### Inspection & Navigation
+* **Search for a specific user entry using exact word matching:**
+  ```bash
+  sudo grep -w 'joker' /etc/passwd
+  ```
+* **List all groups a specific user belongs to:**
+  ```bash
+  groups joker
+  ```
+* **Switch to another user and load their full environment:**
+  ```bash
+  su - joker
+  ```
+* **Change current working directory:**
+  ```bash
+  cd /path/to/directory
+  ```
+
+---
+
+## Understanding Linux File Permissions
+
+### Permission String Example
+```text
+drwxr-x--- bob bob
+```
+
+| Component | Meaning |
+| :--- | :--- |
+| **d** | File type indicator (**d**irectory) |
+| **rwx** | Owner permissions (read, write, execute) |
+| **r-x** | Group permissions (read, execute, no write) |
+| **---** | Others/World permissions (no access) |
+| **bob** (1st) | Account owner of the directory |
+| **bob** (2nd) | Group owner associated with the directory |
