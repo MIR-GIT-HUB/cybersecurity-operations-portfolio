@@ -1,0 +1,106 @@
+# Windows Command-Line & System Fundamentals — Learning Notes (10 August 2026)
+
+This repository contains structured notes on Windows Command Prompt (cmd.exe), core system utilities, and essential blue‑team troubleshooting skills. All content is original and created for educational use.
+
+---
+
+## 🪟 Command Prompt (cmd.exe)
+
+### Why Use a CLI?
+1. **Lower Resource Usage**  
+   Command-line tools consume minimal memory and CPU, making them ideal for low-power systems and remote devices.
+
+2. **Automation**  
+   Scripts and batch files allow repetitive tasks to run automatically without manual interaction.
+
+3. **Remote Management**  
+   CLI works seamlessly with SSH, enabling remote administration of servers, routers, and IoT devices.
+
+---
+
+## 📁 Windows PATH Environment Variable
+
+### “We can only issue commands within the Windows PATH”
+This means:
+- Only executables located in folders listed in **PATH** can run directly.  
+- Commands outside PATH require full directory paths.  
+- Built‑in commands (dir, cd, ipconfig, netstat, etc.) work because they are already in PATH.
+
+### What is PATH?
+PATH is an environment variable containing directories Windows searches when you type a command in CMD or PowerShell.
+
+---
+
+## 🖥️ System Information Commands
+
+- **ver** — Displays the Windows OS version.  
+- **systeminfo** — Shows detailed system information (OS, hardware, memory, processor).  
+- **driverquery** — Lists installed device drivers.  
+- **driverquery | more** — Displays driver list page-by-page.  
+- **sfc /scannow** — Scans and repairs corrupted system files.  
+- **chkdsk** — Checks disk volumes for errors and bad sectors.
+
+### Viewing Long Output
+- **command | more** — View output page-by-page.  
+- **more file.txt** — Display text files one page at a time.  
+- Exit paging: **CTRL + C**
+
+---
+
+## 🌐 Network Commands
+
+- **ipconfig** — Shows IP address, subnet mask, and default gateway.  
+- **ipconfig /all** — Displays full network configuration including MAC address.  
+- **ping target_name** — Sends ICMP packets to test connectivity.  
+- **tracert target_name** — Traces the route taken to reach a target.  
+- **nslookup domain** — Looks up DNS records using the default name server.  
+- **nslookup domain 1.1.1.1** — Uses a specific name server.  
+- **netstat** — Displays active network connections and listening ports.
+
+---
+
+## 📂 File & Directory Commands
+
+- **cd** — Shows current directory when used without parameters.  
+- **cd target_directory** — Change directory.  
+- **dir** — Lists files and directories.  
+- **dir /a** — Shows hidden and system files.  
+- **dir /s** — Shows files in current and all subdirectories.  
+- **tree** — Visual directory structure.  
+- **mkdir name** — Create a directory.  
+- **rmdir name** — Remove a directory.  
+- **type file.txt** — Display file contents.  
+- **copy source destination** — Copy files.  
+- **del file** — Delete a file.  
+- **copy *.md C:\Markdown** — Copy all `.md` files using wildcard.
+
+---
+
+## ⚙️ Task & Process Management
+
+- **tasklist** — Lists running processes.  
+- **taskkill /PID 4567** — Terminates the process with PID 4567.
+
+---
+
+## 🔐 Shutdown & Restart Commands
+
+- **shutdown /s** — Shut down the system.  
+- **shutdown /r** — Restart the system.  
+- **shutdown /a** — Abort a scheduled shutdown.
+
+---
+
+## 📘 Summary
+
+Today’s learning covered:
+- Core Windows CLI commands  
+- Network diagnostics and troubleshooting  
+- File system navigation and management  
+- Process control and system maintenance  
+- Understanding PATH and command execution rules  
+- Viewing long output with paging  
+- Essential shutdown and restart operations
+
+This knowledge strengthens Windows administration skills and supports blue‑team defensive workflows.
+
