@@ -1,0 +1,76 @@
+# LabEx Linux Fundamentals — Daily Learning Review (10 August 2026)
+
+This repository documents daily progress in Linux fundamentals, system reconnaissance, and command‑line skills. 
+
+---
+
+## 🌍 System Awareness — “The Lay of the Land”
+
+Understanding the current user, kernel, and system environment is essential for monitoring, troubleshooting, and planning maintenance.
+
+### Commands Learned
+- **whoami** — Identifies the current user.
+- **uname** — Shows the kernel name.
+- **uname -a** — Displays all available system information in one line.
+- **uptime** — Shows how long the system has been running, number of users, and load averages.
+
+### Key Concepts
+- System uptime helps evaluate stability and performance.
+- Load averages represent the average system load over 1, 5, and 15 minutes.
+- Full system info (`uname -a`) is useful for quick reconnaissance.
+
+---
+
+## 👤 User Identity & Permissions
+
+Understanding user identity and group membership is fundamental for security and access control.
+
+### What I Learned
+- UID (User ID) defines our identity on the system.
+- GID (Group ID) defines our primary group.
+- Additional groups grant extra permissions and access rights.
+
+---
+
+## 📊 Monitoring Real-Time System Performance
+
+A core part of system reconnaissance is observing CPU, memory, and running processes.
+
+### Commands Learned
+- **top** — Provides a dynamic, real‑time view of system performance.
+  - Automatically refreshes.
+  - Press **q** to quit.
+
+### Why This Matters
+- Helps identify resource bottlenecks.
+- Useful for spotting misbehaving or high‑load processes.
+- Essential for system administration and troubleshooting.
+
+---
+
+## ✍️ Writing to Files — Learning From Mistakes
+
+I practiced using `echo` to write data into files.
+
+### Key Lessons
+- Use `echo "text"` to ensure content is interpreted correctly.
+- Quotes prevent unexpected shell behavior.
+- Redirect output using `>` to write or `>>` to append.
+
+---
+
+## 📘 Summary
+
+Today’s learning focused on:
+- Identifying user and system information  
+- Understanding uptime and load averages  
+- Monitoring real‑time system performance  
+- Recognizing the importance of UID, GID, and group membership  
+- Correctly writing content to files using `echo`  
+
+---
+
+
+
+
+
