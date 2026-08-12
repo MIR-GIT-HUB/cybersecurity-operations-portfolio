@@ -1,0 +1,57 @@
+# PowerShell Fundamentals — Object-Oriented Shell
+
+PowerShell is an object-oriented command-line shell and scripting language built on the .NET framework. Unlike traditional Windows Command Prompt or Unix-like shells that output plain text, PowerShell works with structured objects. Each object contains properties (such as Name, Length, Extension) and methods (such as Stop(), CopyTo()). This design makes automation more reliable and eliminates the need for manual text parsing.
+
+## Why Objects Matter
+Jeffrey Snover, the architect of PowerShell, observed that Windows exposes rich structured APIs, while Unix tools rely heavily on text streams. To unify system management and improve automation, PowerShell was built to return objects instead of raw text. This allows commands to pass detailed data through the pipeline without losing structure.
+
+## Discovering Commands and Help
+- List commands starting with the verb Remove:
+  Get-Command -Name Remove*
+- Cmdlet behind the traditional echo alias:
+  Write-Output
+- Show example usage for New-LocalUser:
+  Get-Help New-LocalUser -Examples
+
+## Working with Files and Directories
+PowerShell provides cmdlets that mirror traditional shell operations but operate on objects:
+
+- List directory contents (similar to dir/ls):
+  Get-ChildItem -Path C:\Users
+- Change directory (similar to cd):
+  Set-Location
+- Create files or directories:
+  New-Item
+- Remove files or directories (replaces del and rmdir):
+  Remove-Item
+- Copy items:
+  Copy-Item
+- Move items:
+  Move-Item
+- Read file content (similar to type/cat):
+  Get-Content
+
+## Pipelines: Passing Objects, Not Text
+The pipeline operator (|) connects commands so the output of one becomes the input of another. In PowerShell, pipelines pass objects, enabling powerful filtering and transformation.
+
+### Filtering with Where-Object
+Example: list only .txt files
+Get-ChildItem | Where-Object Extension -eq ".txt"
+
+### Comparison Operators
+-eq : equal to
+-ne : not equal
+-gt : greater than
+-ge : greater than or equal
+-lt : less than
+-le : less than or equal
+
+Example: items in the current directory with size greater than 100 bytes
+Get-ChildItem | Where-Object Length -gt 100
+
+### Pattern Matching
+Use -like for wildcard-based filtering.
+
+## Selecting and Searching Data
+- Select-Object — choose specific properties or limit the number of returned objects.
+- Select-String — search text using patterns or full regular expressions, similar to grep or findstr. Useful for scanning logs or documents.
