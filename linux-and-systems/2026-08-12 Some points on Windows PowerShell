@@ -1,0 +1,13 @@
+## Windows PowerShell — Brief Learning Points
+
+- Get-ComputerInfo — Retrieves full system configuration including OS, BIOS, and hardware details; far more comprehensive than systeminfo.
+- Get-LocalUser — Lists all local user accounts with username, status, and description; useful for quick user auditing.
+- Get-NetIPConfiguration — Shows detailed network interface information such as IP addresses, DNS servers, and gateway configuration.
+- Get-NetIPAddress — Displays all IP addresses configured on the system, including inactive ones.
+- Get-Process — Provides details on running processes including CPU and memory usage; essential for monitoring and troubleshooting.
+- Get-Service — Shows service states (running, stopped, paused); heavily used in system administration and forensic investigations.
+- Get-NetTCPConnection — Lists active TCP connections; valuable for incident response and detecting suspicious remote endpoints.
+- Get-FileHash — Generates file hashes for integrity checks, threat hunting, and malware analysis.
+- Alternate Data Streams (ADS) — NTFS files can contain hidden ADS such as file.txt:streamname.
+  - :$DATA is the default data stream containing normal file contents.
+  - Additional named streams represent hidden data stored in the file (e.g., file.txt:housinginfo).
