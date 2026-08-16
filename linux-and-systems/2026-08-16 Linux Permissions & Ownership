@@ -1,0 +1,102 @@
+# Linux Permissions & Ownership — Training Summary
+
+This document summarizes the core concepts practiced while configuring secure project directories, fixing common command mistakes, and applying correct numeric permission modes in Linux. It is designed as a quick‑reference guide for future labs and real‑world system administration.
+
+## Understanding Permission Basics
+
+Linux permissions define access for three categories: **owner**, **group**, and **others**. 
+Numeric permission values combine:
+* **read (4)**
+* **write (2)**
+* **execute (1)**
+
+### Quick Examples
+* **7** = `rwx` (Full permissions)
+* **5** = `r-x` (Read and execute)
+* **0** = `---` (No permissions)
+
+*Note: Numeric modes always apply in the strict order of **owner–group–others**.*
+
+---
+
+## Correct Command Structures
+
+### `chmod`
+Sets permissions on files or directories.
+
+**Structure:**
+```bash
+chmod MODE PATH
+```
+
+**Examples:**
+* **Secure file:** `chmod 600 project_keys.txt`
+* **Project directory:** `chmod 750 ~/project/phoenix_project`
+* **Collaborative directory with setgid:** `chmod 2770 ~/project/phoenix_project/src`
+
+### `chown`
+Changes ownership (user and group).
+
+**Structure:**
+```bash
+sudo chown USER:GROUP PATH
+```
+
+**Recursive ownership (applying to all subdirectories and files):**
+```bash
+sudo chown -R dev_lead:developers ~/project/phoenix_project
+```
+
+---
+
+## Common Mistakes & Corrections
+
+* **Reversed `chmod` arguments**  
+  * *Incorrect:* `chmod project_keys.txt 600`  
+  * *Correct:* `chmod 600 project_keys.txt`
+* **Using usernames as paths**  
+  * `chmod dev_lead 7` fails because `dev_lead` is a user, not a file or directory.
+* **Wrong `chown` recursive option**  
+  * Lowercase `-r` is invalid; always use uppercase `-R` for recursive ownership.
+* **Invalid numeric modes**  
+  * Modes like `421` do not match required security policies for typical environments.
+* **Terminal command concatenation**  
+  * Always clear the line before pressing Enter to avoid executing accidental merged commands.
+* **Using `cat` on directories**  
+  * `cat` reads files, not directories. To inspect a directory itself, use:
+    ```bash
+    ls -ld PATH
+    ```
+
+---
+
+## Advanced Workflows
+
+### Setgid for Collaboration
+The `setgid` bit ensures that any new files created inside a directory automatically inherit the directory’s group, rather than the creator's primary group.
+* **Numeric representation:** Leading `2`  
+
+**Example:**
+```bash
+chmod 2770 ~/project/phoenix_project/src
+```
+
+### Group Membership Refresh
+If you are newly added to a system group (e.g., `developers`), your active terminal session will not recognize it immediately. Refresh your permissions without logging out by running:
+```bash
+newgrp developers
+```
+
+---
+
+## Verification Commands
+
+Use these commands to confirm your environment configuration precisely:
+
+```bash
+# View human-readable permissions, owner, and group details
+ls -ld PATH          
+
+# View the exact numeric permission mode (e.g., 755)
+stat -c '%a' PATH    
+```
