@@ -1,0 +1,25 @@
+# Network Protocol Fundamentals 
+
+A practical exploration of core networking fundamentals, protocol interactions, and defensive security verification techniques using native command-line tools. This repository documents hands-on labs exploring the ISO/OSI model, TCP/IP structures, transport mechanics, and manual service enumeration.
+
+## 📌 Project Overview
+
+This lab focuses on interacting directly with network services at the command line to understand how data moves across different layers of the network stack. By stripping away web browsers and automated scanners, these exercises demonstrate how raw text protocols communicate over standard TCP ports, highlighting how attackers gather reconnaissance data and how Blue Teams (defenders) audit and secure network boundaries.
+
+## 🛠️ Core Concepts Covered
+
+### 1. The Network Stack Models
+* **ISO/OSI Model**: Conceptual 7-layer framework mapping data from physical transmission up to application interfaces.
+* **TCP/IP Model**: The 4-layer functional framework powering the modern internet, originally developed by the Department of Defense (DoD) to provide fault-tolerant, adaptive routing capable of surviving localized infrastructure damage.
+* **Encapsulation**: The mechanism where data flows down the stack, with each layer wrapping the payload inside its own header metadata (creating **Segments** via TCP, **Datagrams** via UDP, or **Frames** via the Data Link layer).
+
+### 2. IP Addressing & Subnet Architecture
+* **IPv4 Structure**: 32-bit addresses divided into four 8-bit octets, restricting valid segment values strictly between `0` and `255`.
+* **Reserved Boundaries**: Network identifiers (`.0` in a standard /24 block) and broadcast channels (`.255`) are reserved for structural routing and cannot be assigned to endpoints.
+* **RFC 1918 Private Ranges**: Non-routable internal ranges (`10.0.0.0/8`, `172.16.0.0/12`, `192.168.0.0/16`) requiring Network Address Translation (NAT) via a gateway router to access the public internet.
+
+### 3. Transport Mechanics & Port Verification
+* **TCP vs. UDP**: Analyzing the reliable connection-oriented TCP protocol—driven by the 3-Way Handshake (`SYN` ➔ `SYN-ACK` ➔ `ACK`)—against the high-speed, connectionless UDP protocol.
+* **Port Boundaries**: Transport-layer software multiplexing utilizing 16-bit addressing, yielding a maximum port range of `1` to `65535` (Port `0` is reserved).
+
+---
