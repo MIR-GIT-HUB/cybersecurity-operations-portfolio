@@ -1,0 +1,87 @@
+Core Protocols
+DHCP — Dynamic Host Configuration Protocol
+DHCP automatically assigns network configuration to devices joining a network. It provides:
+
+IP address
+
+Subnet mask
+
+Default gateway
+
+DNS server
+
+DHCP uses a four‑step process known as DORA:
+
+Discover
+
+Offer
+
+Request
+
+Acknowledge
+
+DHCP prevents manual configuration errors and avoids IP address conflicts by dynamically assigning addresses.
+
+ARP — Address Resolution Protocol
+ARP maps an IPv4 address to a MAC address so devices on the same Ethernet or WiFi network can communicate.
+
+ARP Request is broadcast on the local network.
+
+ARP Reply contains the target device’s MAC address.
+
+This allows hosts to build proper Layer 2 frames for communication.
+
+NAT — Network Address Translation
+NAT allows private IP addresses to communicate on the public Internet by translating them to a router’s public IP. It conserves IPv4 address space and adds a layer of abstraction between internal and external networks.
+
+ICMP — Internet Control Message Protocol
+ICMP is used for diagnostics and error reporting. Two major tools rely on it:
+
+Ping
+Ping sends ICMP Echo Requests and receives Echo Replies. It measures round‑trip time (RTT) and packet loss, helping determine whether a target is reachable.
+
+Traceroute / Tracert
+Traceroute uses the Time‑to‑Live (TTL) field in IP headers. Each router decreases the TTL, and when it reaches zero, the router sends an ICMP Time Exceeded message. This reveals each hop along the path to a destination.
+
+Routing Protocols
+Routing protocols determine the best path for data across networks.
+
+OSPF — Open Shortest Path First
+Link‑state protocol
+
+Routers share topology information
+
+Builds a complete network map
+
+Calculates shortest paths using Dijkstra’s algorithm
+
+EIGRP — Enhanced Interior Gateway Routing Protocol
+Cisco proprietary
+
+Hybrid algorithm
+
+Considers metrics like bandwidth and delay
+
+Fast convergence and efficient routing
+
+BGP — Border Gateway Protocol
+Core routing protocol of the global Internet
+
+Connects autonomous systems (ISPs, large organizations)
+
+Determines inter‑network paths worldwide
+
+RIP — Routing Information Protocol
+Distance‑vector protocol
+
+Chooses routes based on hop count
+
+Simple and used in small networks
+
+Tools
+tcpdump
+A command‑line packet capture tool used to inspect network traffic.
+
+tshark
+The command‑line interface version of Wireshark.
+Provides detailed protocol analysis and advanced filtering.
