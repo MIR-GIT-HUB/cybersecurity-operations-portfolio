@@ -1,0 +1,70 @@
+# Network Core Protocols & Hands-On Troubleshooting
+
+A comprehensive repository documenting my hands-on learning journey through core network application protocols. This lab focused on understanding protocol behaviors, analyzing text-based services (FTP, POP3, SMTP, DNS, HTTP), and troubleshooting real-world terminal interaction mistakes using interactive shell clients like `ftp` and `telnet`.
+
+## 📌 Project Overview
+This repository serves as a personal knowledge base and cheat sheet for understanding how different internet applications interact over the network. It tracks practical challenge scenarios where I successfully interacted directly with low-level protocol commands to isolate diagnostic errors and retrieve data.
+
+---
+
+## 🚀 Key Learning Objectives & Protocols Covered
+
+### 1. File Transfer Protocol (FTP) - Port 21
+*   Designed specifically for efficient, high-speed file transfers.
+*   **Key Verification Verb Syntax:** `USER` (Input username), `PASS` (Input password), `RETR` (Download/retrieve a file), and `STOR` (Upload/store a file).
+*   **Hands-on Achievement:** Connected anonymously to a remote `vsFTPd` server and successfully exfiltrated a validation file containing the target verification flag.
+
+### 2. Mail Services (SMTP, POP3, IMAP)
+*   **SMTP (Port 25):** Handles *sending* mail (Post office drop-off analogy). Uses commands like `HELO`, `MAIL FROM`, `RCPT TO`, and `DATA`.
+*   **POP3 (Port 110):** Handles *retrieving/downloading* mail (Physical mailbox delivery analogy). Works on a strict 2-step authentication model before unlocking mailbox verbs like `STAT`, `LIST`, and `RETR`.
+*   **IMAP (Port 143):** Provides real-time, multi-device mail *synchronization* directly on the remote mail server using commands like `LOGIN`, `SELECT`, and `FETCH`.
+
+### 3. Domain Name System (DNS) - Port 53 (UDP/TCP)
+*   Operates at the Application Layer (Layer 7) to resolve hostnames to IP addresses.
+*   **A Records:** Map hostnames to IPv4 addresses.
+*   **AAAA Records:** Map hostnames to IPv6 addresses (Quad-A).
+*   **CNAME Records:** Canonical aliases mapping one domain to another domain.
+*   **MX Records:** Specify mail servers responsible for handling domain emails.
+
+---
+
+## 🧠 Troubleshooting Log (Lessons Learned from Mistakes)
+
+During the practical phases, several technical execution errors were encountered and systematically resolved:
+
+### ❌ Issue 1: FTP Parsing Error
+*   **The Mistake:** Typing `open [TARGET_IP]` all on a single line within the interactive FTP `(to)` sub-prompt.
+*   **The Error:** `ftp: Can't lookup 'open:[TARGET_IP]': Servname not supported for ai_socktype`
+*   **The Fix:** When inside interactive shells, the command engine differs from a standard bash shell. Enter *only* the raw IP address when the `(to)` sub-prompt appears.
+
+### ❌ Issue 2: Connecting to the Wrong Application Layer Service
+*   **The Mistake:** Initiating a raw `telnet [TARGET_IP]` command to find a POP3 mail server.
+*   **The Error:** Redirected straight to an Ubuntu Linux OS system login prompt instead of the mail banner greeting.
+*   **The Fix:** Telnet defaults to Port 23. To target a specific network application layer service, the target destination port must be appended explicitly at the very end of the line (`telnet [TARGET_IP] 110`).
+
+### ❌ Issue 3: Violating Protocol Verbs & State Engine Flow
+*   **The Mistake:** Entering a raw username string immediately upon connecting to POP3, or passing a bare integer (like `1`) to read an email body.
+*   **The Error:** `-ERR Unknown command` / `-ERR No username giv`
+*   **The Fix:** Application layer protocols communicate strictly through predetermined prefix verbs. You must explicitly state the operation keyword before your input variables (`USER [username]` or `RETR 1`). Furthermore, stateful protocols like POP3 lock data retrieval commands entirely until the multi-step authentication phase (`USER` then `PASS`) is fully completed.
+
+---
+
+## 🛠️ Essential Tools & Network Diagnostic Insights
+*   **Telnet:** A powerful plaintext terminal interface client used manually to craft application headers and test raw text connections to remote server listening ports.
+*   **Wireshark:** A network packet analyzer. Because legacy protocols like FTP, POP3, and Telnet transmit all credentials and payloads in **unencrypted plaintext**, Wireshark acts as an indispensable "X-ray machine" to audit, intercept, and visually trace strings passing through a network card.
+
+---
+
+## 📊 Standard Protocol Quick-Reference Card
+
+| Protocol | Default Port | Primary Purpose |
+| :--- | :--- | :--- |
+| **FTP** | 21 | High-speed File Transfer Control |
+| **SSH** | 22 | Secure Encrypted System Administration |
+| **Telnet** | 23 | Plaintext Remote Terminal Login |
+| **SMTP** | 25 | Outbound Email Routing / Delivery |
+| **DNS** | 53 | Hostname-to-IP Address Directory |
+| **HTTP** | 80 | Plaintext Hypertext Web Traffic |
+| **POP3** | 110 | Local Email Retrieval & Downloading |
+| **IMAP** | 143 | Server-side Email Synchronization |
+| **HTTPS** | 443 | Secure Encrypted Web Traffic |
