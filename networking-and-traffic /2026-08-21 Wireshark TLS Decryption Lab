@@ -1,0 +1,43 @@
+# Wireshark TLS Decryption Lab 🛡️🔍
+
+This repository documents a practical cybersecurity exercise focused on intercepting and decrypting secure Transport Layer Security (TLS/HTTPS) network traffic using Wireshark and browser session key-logging.
+
+## 📌 Project Overview
+In modern networks, sensitive data like credentials are encrypted using HTTPS (TLS) before being transmitted over the wire. This project demonstrates how security professionals can decrypt and audit this traffic during an authorized assessment by capturing the cryptographic keys directly from the endpoint browser.
+
+## 🧠 Key Concepts Covered
+* **Network Traffic Analysis:** Using Wireshark to capture, view, and analyze raw network packets.
+* **TLS Key Logging:** Forcing a web browser to dump master secret keys into a dedicated log file.
+* **Session Decryption:** Importing external key logs into packet analysis tools to reveal cleartext HTTP payloads.
+* **Endpoint Security:** Demonstrating why network encryption can be bypassed if the underlying host machine is compromised.
+
+## 🛠️ Step-by-Step Methodology
+
+### 1. Launching the Browser with Key Logging
+To capture the decryption keys, the web browser was launched via the command line with an explicit flag directing it to dump session keys to a local file:
+```bash
+[browser-command] --ssl-key-log-file=/path/to/ssl-key.log
+```
+*As user traffic is generated, the cryptographic handshakes are automatically recorded into the specified log file.*
+
+### 2. Capturing the Network Traffic
+Network traffic was monitored and saved into a standard packet capture file (`.pcapng`).
+
+### 3. Configuring the Protocol Analyzer for Decryption
+Initially, the packet capture tool only displays encrypted protocols (TCP/TLS wrappers). To decrypt the data stream:
+1. Open the packet capture file in Wireshark.
+2. Navigate to **Edit** > **Preferences** > **Protocols** > **TLS**.
+3. In the **(Pre)-Master-Secret log filename** field, browse and select the generated key log file.
+4. Apply changes. The packet analyzer will automatically recalculate and decrypt the secure streams.
+
+### 4. Locating and Isolating the Credentials
+Once decrypted, specific application-layer filters were applied to isolate the authentication payload:
+* **Filters Applied:** `http` / `http2` / `http.request.method == "POST"`
+* **Payload Inspection:** Expanding the **Hypertext Transfer Protocol** layer down to the **HTML Form URL Encoded** parameters reveals the plain-text submission data (usernames and passwords).
+
+## ⚙️ Requirements
+* **Wireshark** (or any compatible network packet analyzer)
+* **Chromium-based Browser** (supporting SSL key logging)
+* **Linux / Unix Environment** (for packet capture and path routing)
+
+---
